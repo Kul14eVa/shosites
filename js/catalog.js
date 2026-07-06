@@ -50,7 +50,6 @@ function renderCatalog() {
     const isAdmin = window.isAdminMode === true;
     console.log('📦 Рендеринг каталога, товаров:', catalogProducts.length);
 
-    // Если товаров нет - показываем сообщение
     if (catalogProducts.length === 0) {
         container.innerHTML = `
             <div class="col-span-3 text-center py-12 text-slate-500">
@@ -66,12 +65,12 @@ function renderCatalog() {
         return;
     }
 
-    // Рендерим товары
     container.innerHTML = catalogProducts.map(product => `
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition product-card">
             <div class="relative h-48 bg-slate-100">
-                <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover" loading="lazy" 
-                     onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                <img src="${product.image_url}" alt="${product.name}" 
+                     class="w-full h-full object-cover" loading="lazy" 
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=No+Image'">
                 ${isAdmin ? `
                     <button onclick="deleteProduct(${product.id})" 
                             class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-2 hover:bg-red-700 transition">
