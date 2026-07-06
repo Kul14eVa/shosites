@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ПромСтройТех — продажа термопластавтоматов и комплектующих">
+    <title>ПромСтройТех — Термопластавтоматы</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <!-- ШАПКА С АНИМАЦИЕЙ ПОЯВЛЕНИЯ СВЕРХУ ВНИЗ -->
+	<header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md header-animated">
+		<div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
+			<div class="flex items-center space-x-3 cursor-pointer select-none" onclick="handleLogoClick()">
+				<div class="bg-orange-500 p-2 rounded text-slate-950 font-bold text-xl">Шо?</div>
+				<div>
+					<span class="font-bold text-lg tracking-wider block">Ну тут типа название</span>
+					<span class="text-xs text-slate-400 block -mt-1">Поставки термопластавтоматов</span>
+				</div>
+			</div>
+
+			<div class="flex items-center space-x-4 md:space-x-6 mt-4 lg:mt-0 w-full lg:w-auto justify-between lg:justify-end">
+				<nav class="flex space-x-1 md:space-x-4">
+					<button onclick="switchTab('home')" id="nav-home" class="px-2.5 py-2 rounded text-orange-500 font-medium transition text-xs md:text-sm">Конфигуратор</button>
+					<button onclick="switchTab('catalog')" id="nav-catalog" class="px-2.5 py-2 rounded text-slate-300 hover:text-white font-medium transition text-xs md:text-sm">Каталог</button>
+					<button onclick="switchTab('cart')" id="nav-cart" class="px-2.5 py-2 rounded text-slate-300 hover:text-white font-medium transition relative text-xs md:text-sm">
+						Корзина
+						<span id="cart-badge" class="absolute -top-1 -right-1 bg-orange-500 text-slate-950 text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+					</button>
+					<button onclick="switchTab('admin')" id="nav-admin" class="hidden px-2.5 py-2 rounded text-slate-300 hover:text-white font-medium transition flex items-center space-x-1 bg-slate-800 border border-slate-700 text-xs md:text-sm">
+						<i class="fa-solid fa-user-gear text-[10px] text-orange-500"></i>
+						<span id="admin-nav-text">Админ панель</span>
+					</button>
+				</nav>
+
+				<div class="relative">
+					<button id="user-profile-btn" onclick="showAuthModal()" class="w-10 h-10 rounded-full border border-slate-700 bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-orange-500 transition relative">
+						<i class="fa-solid fa-circle-user text-xl"></i>
+						<span id="user-online-badge" class="absolute top-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full hidden"></span>
+					</button>
+					
+					<div id="user-dropdown" class="hidden absolute right-0 mt-2 bg-slate-800 border border-slate-700 rounded-lg shadow-xl p-4 z-50 text-sm space-y-3 min-w-[220px]">
+						<p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Вы вошли как:</p>
+						<p id="user-dropdown-email" class="font-bold text-white truncate text-xs">user@mail.com</p>
+						<hr class="border-slate-700">
+						<button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-xs transition flex items-center space-x-2">
+							<i class="fa-solid fa-arrow-right-from-bracket"></i>
+							<span>Выйти из аккаунта</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+
+        <!-- Вкладка 1: Главная -->
+		<section id="tab-home" class="space-y-12">
+			
+			<!-- Баннер -->
+			<div class="bg-slate-900 rounded-2xl overflow-hidden shadow-xl text-white relative">
+				<div class="absolute inset-0 bg-cover bg-center opacity-15" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80');"></div>
+				<div class="relative z-10 px-6 py-12 md:p-16 max-w-4xl space-y-4">
+					<span class="bg-orange-500 text-slate-950 px-3 py-1 text-xs font-bold tracking-widest uppercase rounded">Промышленное оборудование</span>
+					<h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">Термопластавтоматы <br>для вашего производства</h1>
+					<p class="text-slate-300 text-base md:text-lg">Рассчитайте окупаемость и выберите оптимальное решение.</p>
+				</div>
+			</div>
+
+			<!-- ============================================================
+			КАЛЬКУЛЯТОР ОКУПАЕМОСТИ
+			============================================================ -->
+			<div class="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
+				<div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+					<div class="flex items-center space-x-2">
+						<i class="fa-solid fa-calculator text-orange-500 text-xl"></i>
+						<h2 class="font-extrabold text-base md:text-lg tracking-wide uppercase">Калькулятор окупаемости</h2>
+					</div>
+					<span class="text-xs bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-mono">Оценка инвестиций</span>
+				</div>
+
+				<div class="p-6">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<!-- Левая колонка - ввод данных -->
+						<div class="space-y-4">
+							<div>
+								<label class="block text-sm font-medium text-slate-700 mb-1">Стоимость станка (руб)</label>
+								<input type="number" id="payback-price" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange-500" value="3450000">
+							</div>
+							<div>
+								<label class="block text-sm font-medium text-slate-700 mb-1">Смен в сутки</label>
+								<select id="payback-shifts" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange-500">
+									<option value="1">1 смена</option>
+									<option value="2">2 смены</option>
+									<option value="3" selected>3 смены (круглосуточно)</option>
+								</select>
+							</div>
+							<div>
+								<label class="block text-sm font-medium text-slate-700 mb-1">Тариф на электроэнергию (руб/кВт·ч)</label>
+								<input type="number" id="payback-tariff" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange-500" value="8" step="0.5">
+							</div>
+							<div>
+								<label class="block text-sm font-medium text-slate-700 mb-1">Экономия электроэнергии (кВт/ч) <span class="text-xs text-slate-400">от сервопривода</span></label>
+								<input type="number" id="payback-savings" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange-500" value="15" step="0.5">
+							</div>
+						</div>
+
+						<!-- Правая колонка - результат -->
+						<div class="bg-slate-50 rounded-xl p-6 flex flex-col justify-center items-center text-center">
+							<p class="text-sm text-slate-500">Окупаемость инвестиций</p>
+							<div id="payback-months" class="text-5xl font-black text-orange-600 mt-2">--</div>
+							<p class="text-sm text-slate-500 mt-1">месяцев</p>
+							
+							<div class="w-full mt-6 pt-6 border-t border-slate-200">
+								<div class="flex justify-between text-sm">
+									<span class="text-slate-500">Экономия в год:</span>
+									<span id="payback-yearly" class="font-bold text-emerald-600">-- руб.</span>
+								</div>
+								<div class="flex justify-between text-sm mt-1">
+									<span class="text-slate-500">Экономия в месяц:</span>
+									<span id="payback-monthly" class="font-bold text-emerald-600">-- руб.</span>
+								</div>
+							</div>
+
+							<button onclick="calculatePayback()" class="mt-6 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition">
+								<i class="fa-solid fa-rotate-right mr-2"></i>Рассчитать
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- ============================================================
+			ПРЕИМУЩЕСТВА
+			============================================================ -->
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+					<div class="bg-orange-100 text-orange-600 p-3 rounded-lg"><i class="fa-solid fa-screwdriver-wrench text-xl"></i></div>
+					<div>
+						<h3 class="font-bold text-lg text-slate-900">Пусконаладка под ключ</h3>
+						<p class="text-slate-600 text-sm mt-1">Производим запуск оборудования, оптимизируем цикл литья на вашей оснастке.</p>
+					</div>
+				</div>
+				<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+					<div class="bg-orange-100 text-orange-600 p-3 rounded-lg"><i class="fa-solid fa-clock text-xl"></i></div>
+					<div>
+						<h3 class="font-bold text-lg text-slate-900">Гарантия до 36 месяцев</h3>
+						<p class="text-slate-600 text-sm mt-1">Обеспечиваем надежное гарантийное сопровождение коленных механизмов.</p>
+					</div>
+				</div>
+				<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+					<div class="bg-orange-100 text-orange-600 p-3 rounded-lg"><i class="fa-solid fa-layer-group text-xl"></i></div>
+					<div>
+						<h3 class="font-bold text-lg text-slate-900">Любая периферия</h3>
+						<p class="text-slate-600 text-sm mt-1">Комплектуем заводы чиллерами охлаждения, сушилками сырья, роботами-манипуляторами.</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Новости -->
+			<div>
+				<h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><span class="w-2 h-6 bg-orange-500 rounded mr-2"></span>Новости индустрии ТПА</h2>
+				<div id="news-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+			</div>
+
+			<!-- Контакты -->
+			<div id="contacts" class="bg-slate-900 text-white p-8 rounded-2xl">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div class="space-y-4">
+						<h2 class="text-2xl font-bold">Свяжитесь с дилерским центром ПСТ</h2>
+						<p class="text-slate-400">Наш демонстрационный зал и склад запчастей ТПА находятся в Москве.</p>
+						<div class="space-y-3">
+							<p class="flex items-center space-x-3 text-slate-300"><i class="fa-solid fa-location-dot text-orange-500 w-5"></i> <span>г. Москва, ул. Промышленная, д. 12, стр. 4</span></p>
+							<p class="flex items-center space-x-3 text-slate-300"><i class="fa-solid fa-phone text-orange-500 w-5"></i> <span>+7 (495) 123-45-67</span></p>
+							<p class="flex items-center space-x-3 text-slate-300"><i class="fa-solid fa-envelope text-orange-500 w-5"></i> <span>tpa@promstroytech.ru</span></p>
+						</div>
+					</div>
+					<div class="bg-slate-800 p-6 rounded-xl space-y-4">
+						<h3 class="font-bold text-lg text-orange-500">Заказать расчет окупаемости</h3>
+						<form onsubmit="handleConsultationSubmit(event)" class="space-y-3">
+							<input type="text" placeholder="Ваше имя" required class="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded text-white focus:outline-none focus:border-orange-500 text-sm">
+							<input type="tel" placeholder="Номер телефона" required class="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded text-white focus:outline-none focus:border-orange-500 text-sm">
+							<button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold py-2.5 rounded transition text-sm">Отправить запрос</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+
+        <!-- Вкладка 2: Каталог -->
+		<section id="tab-catalog" class="hidden space-y-6">
+			<div class="flex justify-between items-center flex-wrap gap-4">
+				<h2 class="text-3xl font-extrabold text-slate-900">Модельный ряд термопластавтоматов ПСТ</h2>
+				<button id="admin-add-product-btn" onclick="switchTab('admin')" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded transition text-sm">
+					<i class="fa-solid fa-plus mr-1"></i> Добавить ТПА
+				</button>
+			</div>
+			<div id="catalog-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<!-- Индикатор загрузки -->
+				<div class="col-span-3 text-center py-12" id="catalog-loading">
+					<div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-orange-500 border-t-transparent"></div>
+					<p class="text-slate-500 mt-3">Загрузка товаров...</p>
+				</div>
+			</div>
+
+			<!-- ============================================================
+			БЛОК "НЕ НАШЛИ МОДЕЛЬ?" (ПОСЛЕ КАТАЛОГА)
+			============================================================ -->
+			<div class="mt-12 p-8 bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl border border-orange-200 text-center">
+				<div class="max-w-2xl mx-auto">
+					<div class="text-5xl mb-4">🔍</div>
+					<h3 class="text-2xl font-bold text-slate-900">Не нашли интересующую вас модель?</h3>
+					<p class="text-slate-600 mt-2">Мы можем предложить индивидуальный подход и подобрать оборудование специально под ваши задачи.</p>
+					<button onclick="openEquipmentModal()" 
+							class="mt-6 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg hover:shadow-orange-500/30">
+						<i class="fa-solid fa-handshake mr-2"></i>Подобрать оборудование
+					</button>
+				</div>
+			</div>
+		</section>
+
+        <!-- Вкладка 3: Корзина -->
+        <section id="tab-cart" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-slate-900">Спецификация на поставку</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-4" id="cart-items-container"></div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit space-y-4">
+                    <h3 class="font-bold text-xl border-b pb-3 text-slate-900">Запрос цен и ТКП</h3>
+                    <div class="flex justify-between font-bold text-lg text-slate-950">
+                        <span>Ориентировочно:</span>
+                        <span id="cart-total-price">0 руб.</span>
+                    </div>
+                    <form onsubmit="handlePlaceOrder(event)" class="space-y-3 pt-2">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Компания / Получатель *</label>
+                            <input id="order-name" type="text" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500" placeholder="ООО 'ПолимерПром'">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Телефон для связи *</label>
+                            <input id="order-phone" type="tel" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500" placeholder="+7 (999) 000-00-00">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Email для КП *</label>
+                            <input id="order-email" type="email" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500" placeholder="zakupki@polymer.ru">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Особые требования к оснащению</label>
+                            <textarea id="order-comment" rows="3" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm" placeholder="Например, требуемый диаметр шнека..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold py-3 rounded-lg shadow-md transition">Отправить запрос</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Вкладка 4: Админка -->
+        <section id="tab-admin" class="hidden max-w-4xl mx-auto">
+            <div id="admin-login-card" class="bg-white p-8 rounded-xl shadow-md border max-w-md mx-auto space-y-6">
+                <div class="text-center">
+                    <div class="inline-block bg-slate-900 text-orange-500 p-4 rounded-full mb-3 text-2xl"><i class="fa-solid fa-lock"></i></div>
+                    <h2 class="text-2xl font-bold text-slate-900">Вход в панель дилера</h2>
+                </div>
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                    <input id="admin-login" type="text" required placeholder="Логин" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500">
+                    <input id="admin-password" type="password" required placeholder="Пароль" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500">
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded transition">Войти</button>
+                </form>
+            </div>
+
+            <div id="admin-dashboard" class="hidden space-y-8">
+                <div class="flex justify-between items-center border-b pb-4">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-900">Панель управления</h2>
+                        <p class="text-emerald-600 font-medium text-sm flex items-center mt-1">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span> Режим дилера активен
+                        </p>
+                    </div>
+                    <button onclick="handleAdminLogout()" class="bg-red-100 hover:bg-red-200 text-red-600 font-bold px-4 py-2 rounded transition text-sm">Выйти</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Добавить станок -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900 flex items-center"><i class="fa-solid fa-boxes-stacked text-orange-500 mr-2"></i>Добавить станок ТПА</h3>
+                        <form onsubmit="handleCreateProduct(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Наименование *</label>
+                                <input id="new-prod-title" type="text" required placeholder="Например, Термопластавтомат PST-120" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Цена (руб) *</label>
+                                <input id="new-prod-price" type="number" required placeholder="Ориент. стоимость" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Описание *</label>
+                                <textarea id="new-prod-desc" rows="2" required placeholder="Технические характеристики" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">URL фото *</label>
+                                <input id="new-prod-image" type="text" required placeholder="https://example.com/photo.jpg" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500">
+                            </div>
+                            <div>
+                                <details class="border rounded-lg">
+                                    <summary class="px-3 py-2 cursor-pointer hover:bg-slate-50 font-medium text-sm">
+                                        <i class="fa-solid fa-sliders-h mr-2 text-slate-400"></i>
+                                        Технические характеристики (JSON)
+                                    </summary>
+                                    <div class="p-3">
+                                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Введите JSON с характеристиками</label>
+                                        <textarea id="new-prod-specs" rows="12" class="w-full px-3 py-2 border rounded text-sm font-mono" placeholder='{
+  "screw_diameter": 45,
+  "screw_ratio": 20,
+  "shot_volume": 150,
+  "injection_weight": 135,
+  "injection_rate": 85,
+  "injection_pressure": 180,
+  "screw_speed": 300,
+  "clamp_force": 160,
+  "open_stroke": 400,
+  "tie_bars": "410x410",
+  "max_mould_height": 500,
+  "min_mould_height": 150,
+  "ejector_stroke": 120,
+  "ejector_force": 45,
+  "max_pump_pressure": 16,
+  "pump_motor_power": 30,
+  "heating_power": 18,
+  "dimensions": "5.2x1.8x2.1",
+  "oil_tank": 450,
+  "machine_weight": 5500
+}'></textarea>
+                                        <p class="text-[10px] text-slate-400 mt-1">
+                                            <i class="fa-regular fa-circle-question mr-1"></i>
+                                            <a href="#" onclick="loadSpecTemplate(); return false;" class="text-orange-500 hover:underline">Загрузить шаблон</a>
+                                        </p>
+                                    </div>
+                                </details>
+                            </div>
+                            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold py-2 rounded text-sm shadow-md transition">Добавить в каталог</button>
+                        </form>
+                    </div>
+
+                    <!-- Добавить новость -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900 flex items-center"><i class="fa-solid fa-bullhorn text-orange-500 mr-2"></i>Добавить новость</h3>
+                        <form onsubmit="handleCreateNews(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Заголовок *</label>
+                                <input id="new-post-title" type="text" required placeholder="Заголовок новости" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Текст *</label>
+                                <textarea id="new-post-content" rows="2" required placeholder="Текст новости..." class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">URL фото *</label>
+                                <input id="new-post-image" type="text" required placeholder="https://example.com/photo.jpg" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500">
+                            </div>
+                            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded text-sm shadow-md transition">Опубликовать</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Таблица заказов -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border space-y-4">
+                    <h3 class="font-bold text-xl text-slate-900 flex items-center"><i class="fa-solid fa-clipboard-list text-orange-500 mr-2"></i>Запросы (<span id="orders-count">0</span>)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 uppercase text-xs font-bold border-b">
+                                    <th class="py-3 px-4">ID</th>
+                                    <th class="py-3 px-4">Заказчик</th>
+                                    <th class="py-3 px-4">Контакты</th>
+                                    <th class="py-3 px-4">Спецификация</th>
+                                    <th class="py-3 px-4">Сумма</th>
+                                    <th class="py-3 px-4">Статус</th>
+                                    <th class="py-3 px-4">Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ПОДВАЛ -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-12 text-sm">
+        <div class="container mx-auto px-4 flex flex-col items-center text-center space-y-6">
+            <p class="font-bold text-white tracking-widest text-base">ПРОМСТРОЙТЕХ © 2026</p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="openQrModal('telegram')" class="w-12 h-12 bg-slate-800 hover:bg-sky-500 rounded-full flex items-center justify-center text-white transition-all">
+                    <i class="fa-brands fa-telegram text-xl"></i>
+                </button>
+                <button onclick="openQrModal('whatsapp')" class="w-12 h-12 bg-slate-800 hover:bg-emerald-500 rounded-full flex items-center justify-center text-white transition-all">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- МОДАЛКИ -->
+    <div id="qr-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl text-center relative">
+            <button onclick="closeQrModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <span id="qr-platform-icon" class="text-2xl"></span>
+                <h3 id="qr-platform-title" class="font-extrabold text-xl text-slate-900"></h3>
+            </div>
+            <div class="bg-slate-100 p-4 rounded-xl inline-block mb-4">
+                <img id="qr-code-img" src="" alt="QR" class="w-48 h-48 block rounded-md">
+            </div>
+            <a id="qr-direct-link" href="" target="_blank" class="block w-full text-white font-bold py-2.5 rounded-lg text-sm transition">Начать чат</a>
+        </div>
+    </div>
+
+    <div id="auth-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl relative border border-slate-100">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="flex border-b border-slate-200 mb-6">
+                <button onclick="switchAuthTab('login')" id="tab-btn-login" class="flex-1 pb-3 text-center font-bold text-sm text-orange-500 border-b-2 border-orange-500">Вход</button>
+                <button onclick="switchAuthTab('register')" id="tab-btn-register" class="flex-1 pb-3 text-center font-bold text-sm text-slate-400 border-b-2 border-transparent hover:text-slate-600">Регистрация</button>
+            </div>
+            <form id="auth-login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Email *</label>
+                    <input id="login-email" type="email" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm" placeholder="your@email.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Пароль *</label>
+                    <input id="login-password" type="password" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm" placeholder="••••••••">
+                </div>
+                <div id="auth-errors" class="hidden text-red-500 text-sm"></div>
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-lg text-sm transition">Войти</button>
+            </form>
+            <form id="auth-register-form" onsubmit="handleRegister(event)" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Email *</label>
+                    <input id="reg-email" type="email" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm" placeholder="your@email.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Пароль *</label>
+                    <input id="reg-password" type="password" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm" placeholder="Придумайте пароль (мин. 6 символов)">
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl font-mono font-bold tracking-wider text-slate-800 select-none" id="captcha-text">X7K9</span>
+                            <button type="button" onclick="generateCaptcha()" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-rotate-right"></i></button>
+                        </div>
+                        <div class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i><span id="captcha-timer">60</span>с</div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Введите код с картинки *</label>
+                        <input id="reg-captcha" type="text" maxlength="4" required class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm font-mono uppercase tracking-wider text-center" placeholder="Введите код">
+                    </div>
+                </div>
+                <div class="flex items-start space-x-2 pt-1">
+                    <input type="checkbox" id="reg-agreement" required class="mt-1 h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500 cursor-pointer">
+                    <label for="reg-agreement" class="text-xs text-slate-500 leading-tight cursor-pointer">Я согласен на обработку персональных данных</label>
+                </div>
+                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold py-2.5 rounded-lg text-sm transition">
+                    <i class="fa-solid fa-user-plus mr-2"></i> Зарегистрироваться
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА ХАРАКТЕРИСТИК -->
+    <div id="spec-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl mx-4">
+            <div class="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+                <h2 class="text-xl font-bold text-slate-900" id="spec-modal-title">Технические характеристики</h2>
+                <button onclick="closeSpecModal()" class="text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            <div id="spec-modal-content" class="p-6">
+                <!-- Содержимое вставляется через JS -->
+            </div>
+        </div>
+    </div>
+	
+	<!-- МОДАЛКА ПОДБОРА ОБОРУДОВАНИЯ -->
+	<div id="equipment-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+		<div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl mx-4">
+			<div class="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+				<h2 class="text-xl font-bold text-slate-900 flex items-center">
+					<i class="fa-solid fa-handshake text-orange-500 mr-2"></i>Подобрать оборудование
+				</h2>
+				<button onclick="closeEquipmentModal()" class="text-slate-400 hover:text-slate-600 transition">
+					<i class="fa-solid fa-xmark text-2xl"></i>
+				</button>
+			</div>
+			<div class="p-6">
+				<form id="equipment-form" onsubmit="handleEquipmentSubmit(event)" class="space-y-4">
+					<!-- Email -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Ваша электронная почта *</label>
+						<input id="eq-email" type="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="your@email.com">
+					</div>
+
+					<!-- Телефон -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Ваш номер телефона *</label>
+						<input id="eq-phone" type="tel" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="+7 (999) 000-00-00">
+					</div>
+
+					<!-- Имя -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Ваше имя *</label>
+						<input id="eq-name" type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Иван Иванов">
+					</div>
+
+					<!-- Город -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Ваш город *</label>
+						<input id="eq-city" type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Москва">
+					</div>
+
+					<!-- Организация -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Ваша организация</label>
+						<input id="eq-company" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="ООО 'ПолимерПром'">
+					</div>
+
+					<!-- Тип оборудования -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-2">Какое оборудование вас интересует?</label>
+						<div class="grid grid-cols-2 gap-2">
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-tpa-h" value="ТПА горизонтальные" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">ТПА горизонтальные</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-tpa-v" value="ТПА вертикальные" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">ТПА вертикальные</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-mold-plastic" value="Прессформы для пластика" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">Прессформы для пластика</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-mold-aluminum" value="Прессформы для алюминия" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">Прессформы для алюминия</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-casting" value="Машины для литья алюминия" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">Машины для литья алюминия</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-periphery" value="Периферийное оборудование" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">Периферийное оборудование</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-robots" value="Роботы" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">Роботы</span>
+							</label>
+							<label class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+								<input type="checkbox" id="eq-type-metal" value="Металлообработка" class="text-orange-500 focus:ring-orange-500">
+								<span class="text-sm">Металлообработка</span>
+							</label>
+						</div>
+					</div>
+
+					<!-- Описание задачи -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Описание задачи</label>
+						<textarea id="eq-description" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Опишите вашу задачу, требования к оборудованию..."></textarea>
+					</div>
+
+					<!-- Файл -->
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1">Прикрепить файл</label>
+						<input id="eq-file" type="file" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+						<p class="text-xs text-slate-400 mt-1">Допустимые форматы: doc, docx, txt, xls, pdf, jpg, jpeg, png, tar, zip</p>
+					</div>
+
+					<!-- Согласие -->
+					<div class="flex items-start space-x-2 pt-2">
+						<input type="checkbox" id="eq-agreement" required class="mt-1 h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500">
+						<label for="eq-agreement" class="text-xs text-slate-500 leading-tight">
+							Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь с политикой конфиденциальности.
+						</label>
+					</div>
+
+					<button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition shadow-lg hover:shadow-orange-500/30">
+						<i class="fa-solid fa-paper-plane mr-2"></i>Подобрать оборудование
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+   <!-- JavaScript -->
+	<script src="js/config.js"></script>
+	<script src="js/supabase.js"></script>
+	<script src="js/auth.js"></script>
+	<script src="js/catalog.js"></script>
+	<script src="js/cart.js"></script>
+	<script src="js/admin.js"></script>
+	<script src="js/configurator.js"></script>
+	<script src="js/news.js"></script>
+	<script src="js/specs.js"></script>
+	<script src="js/main.js"></script>
+
+</body>
+</html>
