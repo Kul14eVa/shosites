@@ -33,6 +33,7 @@
 			<div class="flex items-center space-x-4 md:space-x-6 mt-4 lg:mt-0 w-full lg:w-auto justify-between lg:justify-end">
 				<nav class="flex space-x-1 md:space-x-4">
 					<button onclick="switchTab('home')" id="nav-home" class="px-2.5 py-2 rounded text-orange-500 font-medium transition text-xs md:text-sm">Конфигуратор</button>
+					<button onclick="switchTab('service')" id="nav-service" class="px-2.5 py-2 rounded text-slate-300 hover:text-white font-medium transition text-xs md:text-sm"><i class="fa-solid fa-wrench mr-1"></i>Зап.части и ремонт</button>
 					<button onclick="switchTab('catalog')" id="nav-catalog" class="px-2.5 py-2 rounded text-slate-300 hover:text-white font-medium transition text-xs md:text-sm">Каталог</button>
 					<button onclick="switchTab('cart')" id="nav-cart" class="px-2.5 py-2 rounded text-slate-300 hover:text-white font-medium transition relative text-xs md:text-sm">
 						Корзина
@@ -265,6 +266,160 @@
                 </div>
             </div>
         </section>
+
+		<!-- Вкладка 5: Запчасти и ремонт -->
+		<section id="tab-service" class="hidden space-y-12">
+		    <!-- Герой-блок -->
+		    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl overflow-hidden shadow-xl text-white relative">
+		        <div class="relative z-10 px-6 py-12 md:p-16 max-w-4xl space-y-4">
+		            <span class="bg-orange-500 text-slate-950 px-3 py-1 text-xs font-bold tracking-widest uppercase rounded">Ремонт и сервис</span>
+		            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">Ремонт механики ТПА и&nbsp;изготовление деталей</h1>
+		            <p class="text-slate-300 text-base md:text-lg max-w-2xl">Восстанавливаем коленно-рычажные механизмы, плиты, посадочные отверстия, колонны, гайки и узлы смыкания ТПА. Работаем на выезде и на производственной базе.</p>
+		            <div class="flex flex-wrap gap-4 pt-2">
+		                <button onclick="document.getElementById('service-request').scrollIntoView({behavior: 'smooth'})" class="bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-orange-500/25">Получить консультацию</button>
+		                <button onclick="document.getElementById('service-advantages').scrollIntoView({behavior: 'smooth'})" class="border border-white/30 hover:bg-white/10 text-white font-medium px-6 py-3 rounded-xl transition">Узнать больше</button>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <!-- Блок: Какие задачи решаем -->
+		    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+		        <div class="p-6 md:p-8">
+		            <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Какие задачи по ТПА решаем</h2>
+		            <p class="text-slate-600 mt-2">GRC выполняет ремонт механических узлов термопластавтоматов: восстанавливает изношенные посадочные места, проушины, плиты, колонны, гайки, сопряжения и другие крупногабаритные детали. В зависимости от задачи ремонт выполняется на месте установки оборудования или на производственной базе.</p>
+		            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>износ отверстий и посадочных мест</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>люфты в коленно-рычажном механизме</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>повреждение плит ТПА</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>износ или повреждение колонн</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>износ гаек колонн</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>нарушение сопряжений в узле смыкания</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>необходимость изготовить новую деталь по образцу</span></div>
+		                <div class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i><span>невозможность быстро демонтировать крупный узел</span></div>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <!-- Основные направления ремонта -->
+		    <div>
+		        <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-6">Основные направления ремонта ТПА</h2>
+		        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition">
+		                <div class="p-6">
+		                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-gears"></i></div>
+		                    <h3 class="text-xl font-bold text-slate-900">Ремонт коленно-рычажных механизмов</h3>
+		                    <p class="text-slate-600 text-sm mt-2">Восстанавливаем проушины, отверстия, рычаги, пальцы и втулки КРМ ТПА. Выполняем мобильную расточку и изготовление новых деталей.</p>
+		                    <ul class="mt-4 space-y-1 text-sm text-slate-600">
+		                        <li>• появился люфт в КРМ</li>
+		                        <li>• разбиты отверстия</li>
+		                        <li>• изношены пальцы и втулки</li>
+		                        <li>• требуется восстановить посадочные места</li>
+		                    </ul>
+		                </div>
+		            </div>
+		
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition">
+		                <div class="p-6">
+		                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-cubes"></i></div>
+		                    <h3 class="text-xl font-bold text-slate-900">Ремонт плит ТПА и восстановление посадочных отверстий</h3>
+		                    <p class="text-slate-600 text-sm mt-2">Восстанавливаем посадочные отверстия, плоскости и геометрию плит термопластавтоматов. Работаем мобильными станками без демонтажа или на стационарном оборудовании.</p>
+		                    <ul class="mt-4 space-y-1 text-sm text-slate-600">
+		                        <li>• разбиты посадочные отверстия</li>
+		                        <li>• нарушены межосевые расстояния</li>
+		                        <li>• повреждены плоскости плит</li>
+		                        <li>• требуется точная расточка или фрезеровка</li>
+		                    </ul>
+		                </div>
+		            </div>
+		
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition">
+		                <div class="p-6">
+		                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-industry"></i></div>
+		                    <h3 class="text-xl font-bold text-slate-900">Изготовление и ремонт колонн</h3>
+		                    <p class="text-slate-600 text-sm mt-2">Изготавливаем и ремонтируем колонны, гайки и резьбовые соединения ТПА по образцу, чертежу или фактическим размерам детали.</p>
+		                    <ul class="mt-4 space-y-1 text-sm text-slate-600">
+		                        <li>• повреждена колонна ТПА</li>
+		                        <li>• изношена резьба</li>
+		                        <li>• требуется новая колонна или гайка</li>
+		                        <li>• оригинальная деталь дорогая или долго поставляется</li>
+		                    </ul>
+		                </div>
+		            </div>
+		
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition">
+		                <div class="p-6">
+		                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-wrench"></i></div>
+		                    <h3 class="text-xl font-bold text-slate-900">Восстановление сопряжения подвижной плиты и толкающего поршня на ТПА Husky</h3>
+		                    <p class="text-slate-600 text-sm mt-2">Восстанавливаем сопряжение подвижной плиты и толкающего поршня на ТПА Husky по месту мобильными станками.</p>
+		                    <ul class="mt-4 space-y-1 text-sm text-slate-600">
+		                        <li>• появился наклёп на сопрягаемых поверхностях</li>
+		                        <li>• нарушено прилегание плиты и поршня</li>
+		                        <li>• узел работает с перекосом</li>
+		                        <li>• требуется ремонт без вывоза крупногабаритных деталей</li>
+		                    </ul>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <!-- Преимущества GRC -->
+		    <div id="service-advantages" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+		        <div class="p-6 md:p-8">
+		            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 text-center mb-8">Преимущества</h2>
+		            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+		                <div class="text-center p-4"><div class="text-4xl mb-3">🔧</div><p class="font-bold text-slate-900">Ремонтируем без демонтажа</p><p class="text-sm text-slate-500">Крупногабаритные плиты и узлы смыкания обрабатываем на месте эксплуатации.</p></div>
+		                <div class="text-center p-4"><div class="text-4xl mb-3">🏭</div><p class="font-bold text-slate-900">Изготавливаем детали на своей базе</p><p class="text-sm text-slate-500">Втулки, пальцы, проушины, ремонтные вставки — полный цикл производства.</p></div>
+		                <div class="text-center p-4"><div class="text-4xl mb-3">⚙️</div><p class="font-bold text-slate-900">Работаем со всеми узлами ТПА</p><p class="text-sm text-slate-500">Плиты, колонны, КРМ, станины, проушины — комплексный подход.</p></div>
+		                <div class="text-center p-4"><div class="text-4xl mb-3">📊</div><p class="font-bold text-slate-900">Подбираем технологию под дефект</p><p class="text-sm text-slate-500">Не один стандартный вариант, а решение под конкретную поломку.</p></div>
+		            </div>
+		            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-8 border-t border-slate-200 text-center">
+		                <div><div class="text-3xl font-black text-orange-500">3000+</div><p class="text-xs text-slate-500">Выполненных проектов</p></div>
+		                <div><div class="text-3xl font-black text-orange-500">20</div><p class="text-xs text-slate-500">Лет опыта работы</p></div>
+		                <div><div class="text-3xl font-black text-orange-500">30</div><p class="text-xs text-slate-500">Мобильных станков</p></div>
+		                <div><div class="text-3xl font-black text-orange-500">170</div><p class="text-xs text-slate-500">Специалистов в команде</p></div>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <!-- Блок: Примеры работ -->
+		    <div>
+		        <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-6">Примеры выполненных работ</h2>
+		        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition"><div class="p-6"><h3 class="font-bold text-slate-900">Восстановление параллельности плит ТПА Husky 300</h3><p class="text-sm text-slate-600 mt-2">Износ подвижной плиты (5,8 мм) и поршня (1,5 мм), нарушение параллельности плит сверх допустимых 0,15 мм.</p><p class="text-sm text-orange-600 mt-3 font-medium">Решение: Мобильная фрезеровка на месте</p></div></div>
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition"><div class="p-6"><h3 class="font-bold text-slate-900">Ремонт линков коленно-рычажного механизма ТПА</h3><p class="text-sm text-slate-600 mt-2">Износ посадочных отверстий в рычагах КРМ двух ТПА (280 т и 220 т).</p><p class="text-sm text-orange-600 mt-3 font-medium">Решение: Расточка + новые втулки</p></div></div>
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition"><div class="p-6"><h3 class="font-bold text-slate-900">Изготовление пальцев и втулок для ТПА Demag 420</h3><p class="text-sm text-slate-600 mt-2">Комплексный ремонт: замена деталей коленно-рычажного механизма.</p><p class="text-sm text-orange-600 mt-3 font-medium">Решение: Полный цикл производства</p></div></div>
+		            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition"><div class="p-6"><h3 class="font-bold text-slate-900">Изготовление и ремонт колонн ТПА</h3><p class="text-sm text-slate-600 mt-2">Отломился резьбовой торец, требовалось изготовить новую колонну.</p><p class="text-sm text-orange-600 mt-3 font-medium">Решение: Восстановление + изготовление</p></div></div>
+		        </div>
+		    </div>
+		
+		    <!-- FAQ -->
+		    <div>
+		        <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-6">Часто задаваемые вопросы</h2>
+		        <div class="space-y-3">
+		            <div class="border border-slate-200 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex justify-between items-center p-4 text-left bg-white hover:bg-slate-50"><span class="font-medium">Можно ли выполнить ремонт без демонтажа плиты?</span><i class="fa-solid fa-chevron-down text-slate-400 transition"></i></button><div class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t">Да, если есть техническая возможность установить мобильный станок и обеспечить доступ к зоне обработки.</div></div>
+		            <div class="border border-slate-200 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex justify-between items-center p-4 text-left bg-white hover:bg-slate-50"><span class="font-medium">Вы изготавливаете новые колонны и гайки?</span><i class="fa-solid fa-chevron-down text-slate-400 transition"></i></button><div class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t">Да, можем изготовить колонны и гайки по образцу, чертежу или фактическим размерам.</div></div>
+		            <div class="border border-slate-200 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex justify-between items-center p-4 text-left bg-white hover:bg-slate-50"><span class="font-medium">Работаете только с Husky?</span><i class="fa-solid fa-chevron-down text-slate-400 transition"></i></button><div class="hidden p-4 text-sm text-slate-600 bg-slate-50 border-t">Нет. Husky — отдельное направление по конкретному узлу. Также выполняем ремонт других термопластавтоматов.</div></div>
+		        </div>
+		    </div>
+		
+		    <!-- Форма заявки -->
+		    <div id="service-request" class="bg-slate-900 rounded-2xl text-white p-8">
+		        <div class="max-w-3xl mx-auto">
+		            <h2 class="text-2xl md:text-3xl font-bold text-center">Опишите вашу задачу</h2>
+		            <p class="text-slate-400 text-center mt-2">Вашу задачу рассматривают инженеры по мобильной мехобработке, ремонту промышленного оборудования и технологи GRC.</p>
+		            <form onsubmit="handleServiceRequest(event)" class="mt-6 space-y-4">
+		                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+		                    <div><input type="text" placeholder="Ваше имя *" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"></div>
+		                    <div><input type="tel" placeholder="Телефон *" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"></div>
+		                </div>
+		                <div><input type="email" placeholder="Email" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"></div>
+		                <div><textarea rows="3" placeholder="Опишите проблему, модель ТПА, размеры, фото/чертежи (можно приложить позже)" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"></textarea></div>
+		                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold py-3.5 rounded-xl transition">Отправить заявку</button>
+		                <p class="text-xs text-slate-500 text-center">Нажимая на кнопку, вы даете согласие на обработку персональных данных</p>
+		            </form>
+		        </div>
+		    </div>
+		</section>
 
         <!-- Вкладка 4: Админка -->
         <section id="tab-admin" class="hidden max-w-4xl mx-auto">
