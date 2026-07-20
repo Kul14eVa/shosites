@@ -266,6 +266,62 @@ async function handleEquipmentSubmit(e) {
     }
 }
 
+// ============================================================
+// ФУНКЦИЯ ДЛЯ FAQ (СКРЫТЬ/ПОКАЗАТЬ ОТВЕТ)
+// ============================================================
+function toggleFaq(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector('.fa-chevron-down');
+    if (content) {
+        content.classList.toggle('hidden');
+        if (icon) {
+            icon.classList.toggle('rotate-180');
+        }
+    }
+}
+
+// ============================================================
+// ОБРАБОТКА ЗАЯВКИ НА РЕМОНТ
+// ============================================================
+async function handleServiceRequest(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const name = form.querySelector('input[placeholder*="Имя"]')?.value?.trim() || 'Не указано';
+    const phone = form.querySelector('input[placeholder*="Телефон"]')?.value?.trim() || 'Не указан';
+    const email = form.querySelector('input[placeholder*="Email"]')?.value?.trim() || 'Не указан';
+    const description = form.querySelector('textarea')?.value?.trim() || 'Не указано';
+    
+    const itemsString = `Заявка на ремонт ТПА:
+Имя: ${name}
+Телефон: ${phone}
+Email: ${email}
+Описание: ${description}`;
+    
+    try {
+        const { data, error } = await supabaseClient
+            .from('web_orders')
+            .insert([{
+                client_name: name,
+                phone: phone,
+                email: email,
+                items: itemsString,
+                total_price: 0,
+                status: 'Новый'
+            }])
+            .select();
+        
+        if (error) throw new Error(error.message);
+        
+        alert('✅ Заявка на ремонт отправлена! Наш специалист свяжется с вами.');
+        form.reset();
+        
+    } catch (error) {
+        alert('❌ Ошибка: ' + error.message);
+    }
+}
+
+
 window.switchTab = switchTab;
 window.handleLogoClick = handleLogoClick;
 window.activateAdminMode = activateAdminMode;
@@ -283,3 +339,5 @@ window.logout = function() {
 window.openEquipmentModal = openEquipmentModal;
 window.closeEquipmentModal = closeEquipmentModal;
 window.handleEquipmentSubmit = handleEquipmentSubmit;
+window.toggleFaq = toggleFaq;
+window.handleServiceRequest = handleServiceRequest;
