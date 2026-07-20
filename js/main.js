@@ -64,10 +64,13 @@ function renderAll() {
     console.log('✅ Приложение готово!');
 }
 
+// ============================================================
+// НАВИГАЦИЯ (ДОБАВИЛ 'service')
+// ============================================================
 function switchTab(tabId) {
     console.log('🔄 Переключение на вкладку:', tabId);
     
-    ['home', 'catalog', 'cart', 'admin'].forEach(id => {
+    ['home', 'catalog', 'cart', 'admin', 'service'].forEach(id => {
         const tab = document.getElementById('tab-' + id);
         if (tab) tab.classList.add('hidden');
     });
@@ -75,7 +78,7 @@ function switchTab(tabId) {
     const activeTab = document.getElementById('tab-' + tabId);
     if (activeTab) activeTab.classList.remove('hidden');
     
-    ['home', 'catalog', 'cart', 'admin'].forEach(id => {
+    ['home', 'catalog', 'cart', 'admin', 'service'].forEach(id => {
         const btn = document.getElementById('nav-' + id);
         if (btn) {
             btn.classList.toggle('text-orange-500', id === tabId);
@@ -94,6 +97,9 @@ function switchTab(tabId) {
     }
 }
 
+// ============================================================
+// КАЛЬКУЛЯТОР ОКУПАЕМОСТИ
+// ============================================================
 function calculatePayback() {
     const price = parseFloat(document.getElementById('payback-price').value);
     const shifts = parseInt(document.getElementById('payback-shifts').value);
@@ -123,6 +129,9 @@ function calculatePayback() {
     }
 }
 
+// ============================================================
+// СЕКРЕТНЫЙ ДОСТУП К АДМИНКЕ
+// ============================================================
 let logoClicks = 0;
 let typedKeys = '';
 
@@ -153,6 +162,9 @@ function activateAdminMode() {
     }
 }
 
+// ============================================================
+// QR МОДАЛКА
+// ============================================================
 function openQrModal(platform) {
     const configs = {
         telegram: {
@@ -189,12 +201,14 @@ function closeQrModal() {
     document.getElementById('qr-modal').classList.add('hidden');
 }
 
+// ============================================================
+// КОНСУЛЬТАЦИЯ
+// ============================================================
 function handleConsultationSubmit(e) {
     e.preventDefault();
     alert('✅ Запрос принят. Инженер свяжется с вами.');
     e.target.reset();
 }
-
 
 // ============================================================
 // МОДАЛКА ПОДБОРА ОБОРУДОВАНИЯ
@@ -209,9 +223,6 @@ function closeEquipmentModal() {
     document.body.style.overflow = '';
 }
 
-// ============================================================
-// ОТПРАВКА ЗАЯВКИ НА ПОДБОР ОБОРУДОВАНИЯ
-// ============================================================
 async function handleEquipmentSubmit(e) {
     e.preventDefault();
     
@@ -222,10 +233,8 @@ async function handleEquipmentSubmit(e) {
     const company = document.getElementById('eq-company').value.trim();
     const description = document.getElementById('eq-description').value.trim();
     
-    // Собираем выбранные типы оборудования
     const types = [];
-    const checkboxes = document.querySelectorAll('#equipment-form input[type="checkbox"]:checked');
-    checkboxes.forEach(cb => {
+    document.querySelectorAll('#equipment-form input[type="checkbox"]:checked').forEach(cb => {
         types.push(cb.value);
     });
     
@@ -234,7 +243,6 @@ async function handleEquipmentSubmit(e) {
         return;
     }
     
-    // Формируем текст заявки
     const itemsString = `Заявка на подбор оборудования:
 Имя: ${name}
 Город: ${city}
@@ -257,7 +265,7 @@ async function handleEquipmentSubmit(e) {
         
         if (error) throw new Error(error.message);
         
-        alert('✅ Заявка на подбор оборудования отправлена! Наш специалист свяжется с вами в ближайшее время.');
+        alert('✅ Заявка на подбор оборудования отправлена! Наш специалист свяжется с вами.');
         closeEquipmentModal();
         document.getElementById('equipment-form').reset();
         
@@ -321,7 +329,9 @@ Email: ${email}
     }
 }
 
-
+// ============================================================
+// ЭКСПОРТ
+// ============================================================
 window.switchTab = switchTab;
 window.handleLogoClick = handleLogoClick;
 window.activateAdminMode = activateAdminMode;
@@ -329,15 +339,14 @@ window.openQrModal = openQrModal;
 window.closeQrModal = closeQrModal;
 window.handleConsultationSubmit = handleConsultationSubmit;
 window.calculatePayback = calculatePayback;
+window.openEquipmentModal = openEquipmentModal;
+window.closeEquipmentModal = closeEquipmentModal;
+window.handleEquipmentSubmit = handleEquipmentSubmit;
+window.toggleFaq = toggleFaq;
+window.handleServiceRequest = handleServiceRequest;
 window.showAuthModal = function() { 
     if (typeof auth?.showModal === 'function') auth.showModal(); 
 };
 window.logout = function() { 
     if (typeof auth?.logout === 'function') auth.logout(); 
 };
-
-window.openEquipmentModal = openEquipmentModal;
-window.closeEquipmentModal = closeEquipmentModal;
-window.handleEquipmentSubmit = handleEquipmentSubmit;
-window.toggleFaq = toggleFaq;
-window.handleServiceRequest = handleServiceRequest;
